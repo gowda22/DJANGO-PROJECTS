@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Student Feedback</title>
+    <link rel="stylesheet" href="{% static 'feedback/css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>All Student Feedback</h2>
+
+        {% for item in data %}
+            <div class="feedback-item">
+                <h3>{{ item.name }}</h3>
+                <p><strong>Email:</strong> {{ item.email }}</p>
+                <p><strong>Message:</strong> {{ item.message }}</p>
+            </div>
+            <hr>
+        {% empty %}
+            <p>No feedback has been submitted yet.</p>
+        {% endfor %}
+
+        <a href="{% url 'feedback' %}">Go Back to Form</a>
+    </div>
+</body>
+</html>
