@@ -1,0 +1,34 @@
+
+{% extends 'base.html' %}
+
+{% block title %}All Feedback | Student Feedback{% endblock %}
+
+{% block content %}
+
+<h2>All Student Feedback</h2>
+
+{% for i in data %}
+
+    <div class="feedback-card">
+
+        <h3>{{ i.user.username }}</h3>
+
+        <p>{{ i.message }}</p>
+
+        <small>{{ i.created_at }}</small>
+
+    </div>
+
+{% empty %}
+
+    <div class="empty-state">
+        <p>No feedback has been submitted yet.</p>
+    </div>
+
+{% endfor %}
+
+<p>
+    <a href="{% url 'dashboard' %}">Back to Dashboard</a>
+</p>
+
+{% endblock %}

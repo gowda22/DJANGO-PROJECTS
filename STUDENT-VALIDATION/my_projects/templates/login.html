@@ -1,0 +1,22 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Login | Student Feedback{% endblock %}
+
+{% block content %}
+
+<h2>Welcome Back!</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit">Login</button>
+</form>
+
+<p>
+    Don't have an account?
+    <a href="{% url 'rigister' %}">Register here</a>
+</p>
+
+{% endblock %}
