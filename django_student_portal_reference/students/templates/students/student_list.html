@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Student Profiles{% endblock %}
+{% block content %}
+<h1>Student Profiles</h1>
+<p><a href="{% url 'feedback_create' %}">Submit feedback</a> | <a href="{% url 'feedback_list' %}">View feedback</a></p>
+{% if user.is_staff %}
+    <p>You are staff, so you can view all profiles. Register new accounts using the registration page.</p>
+{% else %}
+    <p>You can view and manage your own profile.</p>
+{% endif %}
+{% if students %}
+    <table border="1" cellpadding="6">
+        <thead>
+            <tr><th>Name</th><th>Email</th><th>Course</th><th>Age</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+        {% for student in students %}
+            <tr>
+                <td>{{ student.name }}</td>
+                <td>{{ student.email }}</td>
+                <td>{{ student.get_course_display }}</td>
+                <td>{{ student.age }}</td>
+                <td>
+                    <a href="{% url 'student_update' student.pk %}">Edit</a>
+                    <form action="{% url 'student_delete' student.pk %}" method="post" style="display:inline" onsubmit="return confirm('Delete this student profile?');">
+                        {% csrf_token %}
+                        <button type="submit">Delete profile</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No student profile is available for this account.</p>
+{% endif %}
+{% endblock %}

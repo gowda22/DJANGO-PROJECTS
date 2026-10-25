@@ -1,0 +1,39 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}File Handling{% endblock %} | Student Assignment Portal</title>
+    <link rel="stylesheet" href="{% static 'assignments/css/style.css' %}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="nav-wrap">
+            <a class="brand" href="{% url 'assignments:list' %}">
+                <span class="brand-mark">FH</span>
+                <span><strong>File Handling</strong><small>Student Assignment Portal</small></span>
+            </a>
+            <nav aria-label="Main navigation">
+                <a href="{% url 'assignments:list' %}">Submissions</a>
+                <a class="nav-cta" href="{% url 'assignments:upload' %}">＋ Upload file</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page-shell">
+        {% if messages %}
+            <div class="messages" aria-live="polite">
+                {% for message in messages %}
+                    <div class="message message-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <p>Built with Django · Upload, store, list and download files</p>
+    </footer>
+</body>
+</html>

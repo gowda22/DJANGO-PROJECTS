@@ -1,0 +1,66 @@
+/* Simple CSS: each rule changes one visible part of the page. */
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    color: #222;
+    margin: 0;
+    padding: 24px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 24px;
+    background: white;
+    border: 1px solid #ddd;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+.help-text {
+    color: #555;
+}
+
+input, select, textarea {
+    max-width: 100%;
+    padding: 6px;
+    margin-top: 4px;
+}
+
+button {
+    padding: 8px 14px;
+    cursor: pointer;
+}
+
+a {
+    color: #0645ad;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+}
+
+th, td {
+    border: 1px solid #888;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background: #eee;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 8px;
+    }
+
+    .container {
+        padding: 12px;
+        overflow-x: auto;
+    }
+}

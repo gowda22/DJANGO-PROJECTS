@@ -1,0 +1,52 @@
+{% extends 'assignments/base.html' %}
+
+{% block title %}Assignment submissions{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-copy">
+        <p class="eyebrow">YOUR WORKSPACE</p>
+        <h1>Assignment submissions</h1>
+        <p class="subtitle">Your uploaded files in one place. Open a file to view or download it.</p>
+        <a class="button button-primary" href="{% url 'assignments:upload' %}">＋ Upload an assignment</a>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+        <div class="file-card file-card-back">DOC</div>
+        <div class="file-card file-card-front"><span>PDF</span><i></i><i></i><i></i></div>
+        <div class="floating-check">✓</div>
+    </div>
+</section>
+
+<section class="list-section">
+    <div class="section-heading">
+        <div><p class="eyebrow">SUBMISSION HISTORY</p><h2>All uploaded files</h2></div>
+        <span class="count-pill">{{ assignments|length }} submission{{ assignments|length|pluralize }}</span>
+    </div>
+
+    {% if assignments %}
+        <div class="table-wrap">
+            <table class="submission-table">
+                <thead><tr><th>Student</th><th>Course</th><th>File</th><th>Submitted</th><th>Action</th></tr></thead>
+                <tbody>
+                    {% for assignment in assignments %}
+                    <tr>
+                        <td><div class="student-cell"><span class="avatar">{{ assignment.student_name|first|upper }}</span><strong>{{ assignment.student_name }}</strong></div></td>
+                        <td><span class="course-chip">{{ assignment.course }}</span></td>
+                        <td><div class="file-name"><span class="file-type">FILE</span><span>{{ assignment.assignment_file.name|cut:'assignments/' }}</span></div></td>
+                        <td class="date-cell">{{ assignment.submitted_on|date:"d M Y, g:i A" }}</td>
+                        <td><a class="download-link" href="{{ assignment.assignment_file.url }}" target="_blank" rel="noopener">Open / download ↗</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">⇧</div>
+            <h3>No submissions yet</h3>
+            <p>Upload your first assignment. It will appear here after the form is saved successfully.</p>
+            <a class="button button-primary" href="{% url 'assignments:upload' %}">Upload first file</a>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

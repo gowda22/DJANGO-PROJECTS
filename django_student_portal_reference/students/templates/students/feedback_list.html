@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Feedback{% endblock %}
+{% block content %}
+<h1>Feedback</h1>
+<p><a href="{% url 'feedback_create' %}">Submit new feedback</a></p>
+{% if feedback_items %}
+    <ul>
+    {% for item in feedback_items %}
+        <li>
+            <strong>{{ item.user.username }}</strong>: {{ item.message }}
+            <small>({{ item.created_at }})</small>
+            {% if user.is_staff or item.user_id == user.id %}
+            <form action="{% url 'feedback_delete' item.pk %}" method="post" style="display:inline">
+                {% csrf_token %}
+                <button type="submit">Delete</button>
+            </form>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No feedback yet.</p>
+{% endif %}
+{% endblock %}
