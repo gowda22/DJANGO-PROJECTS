@@ -1,0 +1,32 @@
+{% extends 'books/base.html' %}
+{% block title %}{{ book.title }} | Library Manager{% endblock %}
+
+{% block content %}
+<div class="breadcrumb"><a href="{% url 'books:book_list' %}">Books</a><span>/</span><span>{{ book.title }}</span></div>
+<section class="detail-layout">
+    <div class="detail-cover" aria-hidden="true"><span>LIBRARY COLLECTION</span><strong>{{ book.title|truncatechars:2|upper }}</strong><small>{{ book.publication_year }}</small></div>
+    <div class="detail-panel">
+        <p class="eyebrow">BOOK DETAILS</p>
+        <h1>{{ book.title }}</h1>
+        <p class="detail-author">by <a href="{% url 'books:author_detail' book.author.id %}">{{ book.author.name }}</a></p>
+        <div class="detail-rule"></div>
+        <dl class="detail-list">
+            <div><dt>ISBN</dt><dd>{{ book.isbn }}</dd></div>
+            <div><dt>Publisher</dt><dd>{{ book.publisher|default:'Not specified' }}</dd></div>
+            <div><dt>Publication year</dt><dd>{{ book.publication_year }}</dd></div>
+            <div><dt>Availability</dt><dd>{{ book.available_copies }} / {{ book.total_copies }} copies</dd></div>
+        </dl>
+        <h2 class="subheading">About this book</h2>
+        <p class="description">{{ book.description|default:'No description has been added for this book.'|linebreaksbr }}</p>
+        <div class="action-row">
+            {% if book.is_available %}
+                <a href="{% url 'books:borrow_book' book.id %}" class="btn btn-primary">Borrow this book</a>
+            {% else %}
+                <span class="status-pill unavailable">Currently unavailable</span>
+            {% endif %}
+            <a href="{% url 'books:book_list' %}" class="btn btn-light">Back to catalog</a>
+        </div>
+        {% if not user.is_authenticated %}<p class="small-note">You will be asked to log in before borrowing a book.</p>{% endif %}
+    </div>
+</section>
+{% endblock %}

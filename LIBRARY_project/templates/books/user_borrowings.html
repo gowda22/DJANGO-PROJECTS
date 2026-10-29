@@ -1,0 +1,47 @@
+{% extends 'books/base.html' %}
+{% block title %}My Borrowings | Library Manager{% endblock %}
+
+{% block content %}
+<section class="page-heading compact-heading">
+    <div><p class="eyebrow">YOUR READING ACTIVITY</p><h1>My Borrowings</h1><p class="muted">Track the books you have borrowed and your return history.</p></div>
+</section>
+<div class="section-line"><h2>Currently borrowed</h2><span class="result-count">{{ active_borrowings|length }} active</span></div>
+<div class="borrowing-list">
+    {% for borrowing in active_borrowings %}
+        <article class="borrowing-card">
+            <div class="borrowing-icon" aria-hidden="true">▤</div>
+            <div class="borrowing-info">
+                <h3><a href="{% url 'books:book_detail' borrowing.book.id %}">{{ borrowing.book.title }}</a></h3>
+                <p class="muted">by {{ borrowing.book.author.name }}</p>
+                <p class="date-row">Borrowed {{ borrowing.borrowed_date|date:'M j, Y' }} <span>&middot;</span> Due {{ borrowing.due_date|date:'M j, Y' }}</p>
+                {% if borrowing.is_overdue %}<p class="overdue-text">Overdue · Estimated fine: ${{ borrowing.calculate_fine|floatformat:2 }}</p>{% endif %}
+            </div>
+            <div class="borrowing-action">
+                {% if borrowing.is_overdue %}<span class="status-pill unavailable">Overdue</span>{% else %}<span class="status-pill available">Active</span>{% endif %}
+                <a href="{% url 'books:return_book' borrowing.id %}" class="btn btn-danger">Return book</a>
+            </div>
+        </article>
+    {% empty %}
+        <div class="empty-state inline-empty"><div class="empty-icon" aria-hidden="true">✓</div><h3>No active borrowings</h3><p>You have no books checked out right now.</p><a href="{% url 'books:book_list' %}" class="btn btn-primary">Browse books</a></div>
+    {% endfor %}
+</div>
+
+<div class="section-line history-heading"><h2>Borrowing history</h2><span class="result-count">Latest 10 returns</span></div>
+<div class="history-table-wrap">
+    <table class="history-table">
+        <thead><tr><th>Book</th><th>Borrowed</th><th>Returned</th><th>Fine</th></tr></thead>
+        <tbody>
+            {% for borrowing in borrowing_history %}
+                <tr>
+                    <td><a href="{% url 'books:book_detail' borrowing.book.id %}">{{ borrowing.book.title }}</a></td>
+                    <td>{{ borrowing.borrowed_date|date:'M j, Y' }}</td>
+                    <td>{{ borrowing.returned_date|date:'M j, Y'|default:'—' }}</td>
+                    <td>{% if borrowing.fine_amount > 0 %}<span class="fine-value">${{ borrowing.fine_amount|floatformat:2 }}</span>{% else %}$0.00{% endif %}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="4" class="table-empty">No returned books in your history yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

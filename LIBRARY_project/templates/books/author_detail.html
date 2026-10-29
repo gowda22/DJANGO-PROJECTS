@@ -1,0 +1,31 @@
+{% extends 'books/base.html' %}
+{% block title %}{{ author.name }} | Library Manager{% endblock %}
+
+{% block content %}
+<div class="breadcrumb"><a href="{% url 'books:book_list' %}">Books</a><span>/</span><span>Author</span></div>
+<section class="author-panel">
+    <div class="author-avatar" aria-hidden="true">{{ author.name|first|upper }}</div>
+    <div>
+        <p class="eyebrow">AUTHOR PROFILE</p>
+        <h1>{{ author.name }}</h1>
+        <p class="muted">Date of birth: {{ author.birth_date|default:'Not specified' }}</p>
+        <p class="description">{{ author.bio|default:'No biography has been added yet.'|linebreaksbr }}</p>
+    </div>
+</section>
+<div class="section-line"><h2>Books by {{ author.name }}</h2><span class="result-count">{{ books|length }} book{{ books|length|pluralize }}</span></div>
+<div class="book-grid">
+    {% for book in books %}
+        <article class="book-card compact-card">
+            <div class="book-cover" aria-hidden="true"><span>BOOK</span><strong>{{ book.title|truncatechars:2|upper }}</strong></div>
+            <div class="book-card-content">
+                <h3><a href="{% url 'books:book_detail' book.id %}">{{ book.title }}</a></h3>
+                <p class="book-isbn">ISBN: {{ book.isbn }}</p>
+                <p class="copies">{{ book.available_copies }} of {{ book.total_copies }} copies available</p>
+                <a href="{% url 'books:book_detail' book.id %}" class="btn btn-outline btn-block">View book</a>
+            </div>
+        </article>
+    {% empty %}
+        <div class="empty-state"><h3>No books listed for this author</h3><p>Add a book in the Django admin panel.</p></div>
+    {% endfor %}
+</div>
+{% endblock %}

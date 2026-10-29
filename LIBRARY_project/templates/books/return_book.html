@@ -1,0 +1,26 @@
+{% extends 'books/base.html' %}
+{% block title %}Return {{ borrowing.book.title }} | Library Manager{% endblock %}
+
+{% block content %}
+<div class="form-card narrow-card">
+    <p class="eyebrow">RETURN CHECKOUT</p>
+    <h1>Return this book?</h1>
+    <p class="muted">Confirm that you are returning this book to the library.</p>
+    <div class="return-summary">
+        <h2>{{ borrowing.book.title }}</h2>
+        <p>Author: {{ borrowing.book.author.name }}</p>
+        <dl class="detail-list compact-details">
+            <div><dt>Borrowed</dt><dd>{{ borrowing.borrowed_date|date:'M j, Y' }}</dd></div>
+            <div><dt>Due date</dt><dd>{{ borrowing.due_date|date:'M j, Y' }}</dd></div>
+        </dl>
+    </div>
+    {% if borrowing.is_overdue %}
+        <div class="fine-notice"><strong>Book overdue</strong><p>Current estimated fine: ${{ borrowing.calculate_fine|floatformat:2 }}. The final fine is calculated when you confirm the return.</p></div>
+    {% endif %}
+    <form method="post" class="form-actions" data-confirm="Confirm return of this book?">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Confirm return</button>
+        <a href="{% url 'books:user_borrowings' %}" class="btn btn-light">Cancel</a>
+    </form>
+</div>
+{% endblock %}

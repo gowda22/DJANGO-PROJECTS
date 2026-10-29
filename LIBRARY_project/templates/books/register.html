@@ -1,0 +1,25 @@
+{% extends 'books/base.html' %}
+{% block title %}Create account | Library Manager{% endblock %}
+
+{% block content %}
+<div class="form-card auth-card register-card">
+    <p class="eyebrow">JOIN THE LIBRARY</p>
+    <h1>Create your account</h1>
+    <p class="muted">Register to borrow books and view your borrowing history.</p>
+    <form method="post" class="stacked-form">
+        {% csrf_token %}
+        {% if form.non_field_errors %}<div class="form-errors">{{ form.non_field_errors }}</div>{% endif %}
+        {% for field in form %}
+            <div class="form-field">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}<small>{{ field.help_text|safe }}</small>{% endif %}
+                {% for error in field.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary btn-block">Create account</button>
+    </form>
+    <p class="form-switch">Already registered? <a href="{% url 'login' %}">Log in</a></p>
+    <p class="admin-link"><a href="/admin/">Library administrator? Go to admin login</a></p>
+</div>
+{% endblock %}
