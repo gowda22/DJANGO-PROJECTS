@@ -1,0 +1,14 @@
+{% extends "college/base.html" %}{% block title %}Dashboard | CampusFlow{% endblock %}
+{% block content %}
+<section class="hero"><div><p class="eyebrow">COLLEGE ADMINISTRATION</p><h1>Welcome to <span>CampusFlow</span></h1><p>Manage your campus information from one simple place.</p></div><div class="hero-icon">🎓</div></section>
+<div class="stats">
+<div class="stat"><span class="stat-icon purple">♙</span><p>Total Students</p><strong>{{ student_count }}</strong></div>
+<div class="stat"><span class="stat-icon blue">▣</span><p>Faculty Members</p><strong>{{ faculty_count }}</strong></div>
+<div class="stat"><span class="stat-icon orange">▤</span><p>Courses</p><strong>{{ course_count }}</strong></div>
+<div class="stat"><span class="stat-icon green">⌂</span><p>Departments</p><strong>{{ department_count }}</strong></div>
+</div>
+<section class="panel"><div class="panel-head"><div><p class="eyebrow">RECENT ENROLLMENTS</p><h2>Latest students</h2></div><a class="btn" href="{% url 'student_add' %}">＋ Add student</a></div>
+{% if recent_students %}<div class="table-wrap"><table><thead><tr><th>Enrollment</th><th>Student</th><th>Course</th><th>Semester</th></tr></thead><tbody>{% for student in recent_students %}<tr><td><span class="code">{{ student.enrollment_no }}</span></td><td><strong>{{ student.full_name }}</strong><small>{{ student.email }}</small></td><td>{{ student.course.name }}</td><td><span class="pill">Sem {{ student.semester }}</span></td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty"><span>✦</span><h3>No students added yet</h3><p>Add a department and course first, then register students.</p><a class="btn primary" href="{% url 'department_add' %}">Add department</a></div>{% endif %}
+</section>
+<section class="quick"><a href="{% url 'department_add' %}"><span>＋</span><div><b>Add department</b><small>Organize campus branches</small></div></a><a href="{% url 'course_add' %}"><span>＋</span><div><b>Add course</b><small>Set up academic courses</small></div></a><a href="{% url 'faculty_add' %}"><span>＋</span><div><b>Add faculty</b><small>Register teaching staff</small></div></a><a href="{% url 'attendance_add' %}"><span>＋</span><div><b>Mark attendance</b><small>Record student presence</small></div></a></section>
+{% endblock %}
