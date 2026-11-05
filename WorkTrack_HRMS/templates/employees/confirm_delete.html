@@ -1,0 +1,1 @@
+{% extends "base.html" %}{% block content %}<section class="card formcard"><h1>Delete employee?</h1><p>Delete {{ object }} and their login account?</p><form method="post">{% csrf_token %}<button class="danger">Delete</button> <a href="{% url 'employee_list' %}">Cancel</a></form></section>{% endblock %}
